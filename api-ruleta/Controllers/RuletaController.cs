@@ -21,20 +21,37 @@ namespace api_ruleta.Controllers
         [HttpPost("premio")]
         public ActionResult<decimal> CalcularPremio([FromBody] PremioRequest request)
         {
-            // Implementar lógica para calcular el premio basado en la apuesta y el resultado de la ruleta
-            decimal premioCalculado = 0;  // Esto debe ser calculado en función de la lógica del juego
-
-            // Ejemplo de cálculo de premio (esto debe ser ajustado según la lógica correcta):
-            if (request.Apuesta.Equals($"{request.ResultadoRuleta.Numero}-{request.ResultadoRuleta.Color}", StringComparison.OrdinalIgnoreCase))
+            // Verificar si la apuesta es válida
+            if (EsApuestaValida(request.Apuesta, request.ResultadoRuleta))
             {
-                premioCalculado = request.MontoApostado * 3;
+                // Implementar lógica para calcular el premio basado en la apuesta y el resultado de la ruleta
+                decimal premioCalculado = CalcularPremio(request.MontoApostado, request.Apuesta, request.ResultadoRuleta);
+                return Ok(premioCalculado);
             }
+            else
+            {
+                return BadRequest("La apuesta no es válida.");
+            }
+        }
 
-            return Ok(premioCalculado);
+        private bool EsApuestaValida(string apuesta, RuletaResultado resultadoRuleta)
+        {
+            // Verificar si la apuesta es válida según la lógica del juego
+            // Por ejemplo, podrías verificar si la apuesta coincide con el resultado de la ruleta
+            // Aquí implementa la lógica adecuada para tu juego de la ruleta
+            return true; // Por ahora, simplemente devuelve true para todos los casos
+        }
+
+        private decimal CalcularPremio(decimal montoApostado, string apuesta, RuletaResultado resultadoRuleta)
+        {
+            // Implementar la lógica para calcular el premio basado en la apuesta y el resultado de la ruleta
+            // Por ahora, simplemente retorna un monto fijo como ejemplo
+            return 100; // Retorna un premio de 100 (esto es un ejemplo)
         }
     }
 
-    public class PremioRequest
+
+public class PremioRequest
     {
         public string Nombre { get; set; }
         public decimal MontoApostado { get; set; }
